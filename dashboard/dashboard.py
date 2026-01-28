@@ -37,16 +37,16 @@ def sum_order (hour_df):
     sum_order_items_df = hour_df.groupby("hours").count_cr.sum().sort_values(ascending=False).reset_index()
     return sum_order_items_df
 
-def macem_season (day_df):
-    season_df = day_df.groupby(by="season").count_cr.sum().reset_index()
+def macem_season (day_df): 
+    season_df = day_df.groupby(by="season").count_cr.sum().reset_index() 
     return season_df
 
-days_df = pd.read_csv("day_clean.csv")
-hours_df = pd.read_csv("hour_clean.csv")
+days_df = pd.read_csv("dashboard/day_clean.csv")
+hours_df = pd.read_csv("dashboard/hour_clean.csv")
 
 datetime_columns = ["dteday"]
 days_df.sort_values(by="dteday", inplace=True)
-days_df.reset_index(inplace=True)
+days_df.reset_index(inplace=True)   
 
 hours_df.sort_values(by="dteday", inplace=True)
 hours_df.reset_index(inplace=True)
@@ -64,18 +64,18 @@ max_date_hour = hours_df["dteday"].max()
 with st.sidebar:
     # Menambahkan logo perusahaan
     st.image("https://storage.googleapis.com/gweb-uniblog-publish-prod/original_images/image1_hH9B4gs.jpg")
-
+    
         # Mengambil start_date & end_date dari date_input
     start_date, end_date = st.date_input(
         label='Rentang Waktu',
         min_value=min_date_days,
         max_value=max_date_days,
         value=[min_date_days, max_date_days])
-
-main_df_days = days_df[(days_df["dteday"] >= str(start_date)) &
+  
+main_df_days = days_df[(days_df["dteday"] >= str(start_date)) & 
                        (days_df["dteday"] <= str(end_date))]
 
-main_df_hour = hours_df[(hours_df["dteday"] >= str(start_date)) &
+main_df_hour = hours_df[(hours_df["dteday"] >= str(start_date)) & 
                         (hours_df["dteday"] <= str(end_date))]
 
 hour_count_df = get_total_count_by_hour_df(main_df_hour)
@@ -90,7 +90,7 @@ st.header('Bike Sharing :sparkles:')
 
 st.subheader('Daily Sharing')
 col1, col2, col3 = st.columns(3)
-
+ 
 with col1:
     total_orders = day_df_count_2011.count_cr.sum()
     st.metric("Total Sharing Bike", value=total_orders)
@@ -109,7 +109,7 @@ fig, ax = plt.subplots(figsize=(16, 8))
 ax.plot(
     days_df["dteday"],
     days_df["count_cr"],
-    marker='o',
+    marker='o', 
     linewidth=2,
     color="#90CAF9"
 )
@@ -126,7 +126,7 @@ ax[0].set_xlabel("Hours (PM)", fontsize=30)
 ax[0].set_title("Jam dengan banyak penyewa sepeda", loc="center", fontsize=30)
 ax[0].tick_params(axis='y', labelsize=35)
 ax[0].tick_params(axis='x', labelsize=30)
-
+ 
 sns.barplot(x="hours", y="count_cr", data=sum_order_items_df.sort_values(by="hours", ascending=True).head(5), palette=["#D3D3D3", "#D3D3D3", "#D3D3D3", "#D3D3D3","#90CAF9"], ax=ax[1])
 ax[1].set_ylabel(None)
 ax[1].set_xlabel("Hours (AM)",  fontsize=30)
@@ -136,14 +136,14 @@ ax[1].yaxis.set_label_position("right")
 ax[1].yaxis.tick_right()
 ax[1].tick_params(axis='y', labelsize=35)
 ax[1].tick_params(axis='x', labelsize=30)
-
+ 
 st.pyplot(fig)
 st.subheader("musim apa yang paling banyak disewa?")
 
 colors = ["#D3D3D3", "#D3D3D3", "#D3D3D3", "#90CAF9"]
 fig, ax = plt.subplots(figsize=(20, 10))
 sns.barplot(
-        y="count_cr",
+        y="count_cr", 
         x="season",
         data=season_df.sort_values(by="season", ascending=False),
         palette=colors,
@@ -160,11 +160,12 @@ st.subheader("Perbandingan Customer yang Registered dengan casual")
 
 labels = 'casual', 'registered'
 sizes = [18.8, 81.2]
-explode = (0, 0.1)
+explode = (0, 0.1) 
 
 fig1, ax1 = plt.subplots()
 ax1.pie(sizes, explode=explode, labels=labels, autopct='%1.1f%%',colors=["#D3D3D3", "#90CAF9"],
         shadow=True, startangle=90)
-ax1.axis('equal')
+ax1.axis('equal')  
 
 st.pyplot(fig1)
+
